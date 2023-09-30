@@ -3,11 +3,38 @@ from PIL import ImageGrab
 import cv2
 import pytesseract
 import os
+import math
 
-#Grab images necessary
+#Finds Distance from (x1, y1) to (x2, y2)
+def calculateDistance(point1, point2):
+    x1, y1 = point1
+    x2, y2 = point2
+    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
 
 
 
+#placeholder for an explanation for this shitty code
+
+def filterDuplicates(inputList):
+    coordinateList = inputList
+    FilteredCoordinateList = []
+    closeCoordinates = []
+
+    while len(coordinateList) != 0:
+        for i in range(1, len(coordinateList)):
+            Distance = calculateDistance(coordinateList[0], coordinateList[i])
+            
+            if Distance <= 3:
+                closeCoordinates.append(coordinateList[i])
+
+        for i in closeCoordinates:
+            coordinateList.remove(i)
+
+        FilteredCoordinateList.append(coordinateList.pop(0))
+        closeCoordinates.clear()
+
+    return FilteredCoordinateList
+    
 def TemplateMatch(templateImage, mainImage):
     # Define a threshold to consider a match
     
@@ -34,6 +61,8 @@ def TemplateMatch(templateImage, mainImage):
 
         Positions.append(pt)
 
+        
+
     return Positions
 
 CardsFolder = r'C:\Users\Nathan\Documents\ProgrammingProjects\Python\SpiderSolitaire\Cards'
@@ -44,12 +73,6 @@ mainImage = cv2.imread('bufferImg.png')
 
 for filename in os.listdir(CardsFolder):
     templateImage = cv2.imread(f"Cards\\{filename}")
-    print(TemplateMatch(templateImage, mainImage))
+    
+    print(filterDuplicates(TemplateMatch(templateImage, mainImage)))
 
-"""
-
-Issues:
-1. Coordinates close to eachother should be consolidated into a single aggregate coordinate.
-2. Whole-ass algorithm needs to be made.
-3. Upside down 6's and 9's (nice.) need to be filtered.
-"""
