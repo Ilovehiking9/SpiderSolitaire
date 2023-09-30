@@ -73,6 +73,8 @@ mainImage = cv2.imread('bufferImg.png')
 
 for filename in os.listdir(CardsFolder):
     templateImage = cv2.imread(f"Cards\\{filename}")
+
+    coordinateList = filterDuplicates(TemplateMatch(templateImage, mainImage))
     
-    print(filterDuplicates(TemplateMatch(templateImage, mainImage)))
+    print(f"{filename} : {coordinateList}")
 
