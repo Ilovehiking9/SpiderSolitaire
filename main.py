@@ -1,6 +1,3 @@
-#if you're reading this, get out. this my branch. shoo.
-
-
 import numpy as np
 from PIL import ImageGrab
 import cv2
@@ -39,9 +36,6 @@ def TemplateMatch(templateImage, mainImage):
 
     return Positions
 
-
-    
-
 CardsFolder = r'C:\Users\Nathan\Documents\ProgrammingProjects\Python\SpiderSolitaire\Cards'
 
 PILimg = ImageGrab.grab()
@@ -52,3 +46,6 @@ for filename in os.listdir(CardsFolder):
     templateImage = cv2.imread(f"Cards\\{filename}")
     print(TemplateMatch(templateImage, mainImage))
 
+#issues to work on later
+"""many coordinates in a concentrated area should be merged
+i.e (222,222), (222,223) should be merged becasue they are similar"""
