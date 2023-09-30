@@ -1,3 +1,6 @@
+#if you're reading this, get out. this my branch. shoo.
+
+
 import numpy as np
 from PIL import ImageGrab
 import cv2
@@ -5,8 +8,6 @@ import pytesseract
 import os
 
 #Grab images necessary
-
-
 
 
 
