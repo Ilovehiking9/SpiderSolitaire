@@ -57,5 +57,5 @@ for filename in os.listdir(CardsFolder):
 Issues:
 1. Coordinates close to eachother should be consolidated into a single aggregate coordinate.
 2. Whole-ass algorithm needs to be made.
-
+3. Upside down 6's and 9's (nice.) need to be filtered.
 """
