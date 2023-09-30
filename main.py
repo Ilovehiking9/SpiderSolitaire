@@ -52,3 +52,10 @@ for filename in os.listdir(CardsFolder):
     templateImage = cv2.imread(f"Cards\\{filename}")
     print(TemplateMatch(templateImage, mainImage))
 
+"""
+
+Issues:
+1. Coordinates close to eachother should be consolidated into a single aggregate coordinate.
+2. Whole-ass algorithm needs to be made.
+
+"""
