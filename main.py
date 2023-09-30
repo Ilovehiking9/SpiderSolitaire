@@ -46,6 +46,10 @@ for filename in os.listdir(CardsFolder):
     templateImage = cv2.imread(f"Cards\\{filename}")
     print(TemplateMatch(templateImage, mainImage))
 
-#issues to work on later
-"""many coordinates in a concentrated area should be merged
-i.e (222,222), (222,223) should be merged becasue they are similar"""
+"""
+
+Issues:
+1. Coordinates close to eachother should be consolidated into a single aggregate coordinate.
+2. Whole-ass algorithm needs to be made.
+3. Upside down 6's and 9's (nice.) need to be filtered.
+"""
