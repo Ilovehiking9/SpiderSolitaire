@@ -1,6 +1,3 @@
-#if you're reading this, get out. this my branch. shoo.
-
-
 import numpy as np
 from PIL import ImageGrab
 import cv2
@@ -38,9 +35,6 @@ def TemplateMatch(templateImage, mainImage):
         Positions.append(pt)
 
     return Positions
-
-
-    
 
 CardsFolder = r'C:\Users\Nathan\Documents\ProgrammingProjects\Python\SpiderSolitaire\Cards'
 
