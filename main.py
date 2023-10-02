@@ -34,13 +34,19 @@ def filterDuplicates(inputList):
         closeCoordinates.clear()
 
     return FilteredCoordinateList
-    
+
+#sorry for the poor name, but this function literally filters 6's and 9's
+
+
+
 def TemplateMatch(templateImage, mainImage):
     # Define a threshold to consider a match
     
+    
+
     copiedImage = mainImage.copy()
     
-    threshold = 0.8
+    threshold = 0.85
 
     # Perform template matching
     result = cv2.matchTemplate(copiedImage, templateImage, cv2.TM_CCOEFF_NORMED)
