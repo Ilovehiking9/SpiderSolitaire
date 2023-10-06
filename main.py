@@ -62,7 +62,7 @@ def TemplateMatch(templateImage, mainImage):
 
         bottom_right = (pt[0] + templateImage.shape[1], pt[1] + templateImage.shape[0])
         cv2.rectangle(copiedImage, pt, bottom_right, (0, 255, 0), 2)
-        cv2.imwrite('result.png', copiedImage)
+        #cv2.imwrite('result.png', copiedImage)
 
 
         Positions.append(pt)
