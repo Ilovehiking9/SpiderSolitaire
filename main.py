@@ -4,7 +4,9 @@ import cv2
 import pytesseract
 import os
 import math
+import time
 
+time.sleep(1)
 #Finds Distance from (x1, y1) to (x2, y2)
 def calculateDistance(point1, point2):
     x1, y1 = point1
@@ -22,9 +24,9 @@ def filterDuplicates(inputList):
 
     while len(coordinateList) != 0:
         for i in range(1, len(coordinateList)):
-            Distance = calculateDistance(coordinateList[0], coordinateList[i])
+            distance = calculateDistance(coordinateList[0], coordinateList[i])
             
-            if Distance <= 3:
+            if distance <= 3:
                 closeCoordinates.append(coordinateList[i])
 
         for i in closeCoordinates:
@@ -71,6 +73,12 @@ def TemplateMatch(templateImage, mainImage):
 
     return Positions
 
+
+
+primaryCardList = []
+
+xCoordinateList = []
+
 CardsFolder = r'C:\Users\Nathan\Documents\ProgrammingProjects\Python\SpiderSolitaire\Cards'
 
 PILimg = ImageGrab.grab()
@@ -82,5 +90,37 @@ for filename in os.listdir(CardsFolder):
 
     coordinateList = filterDuplicates(TemplateMatch(templateImage, mainImage))
     
-    print(f"{filename} : {coordinateList}")
+    for coordinate in coordinateList:
+        primaryCardList.append(dict(cardID = filename.replace(".png", ""), position = coordinate))
+        
+sortedCards = sorted(primaryCardList, key=lambda x: x['position'][0])
 
+
+GameList = []
+
+while len(sortedCards) > 1:
+    comparisonpoint = sortedCards.pop(0)
+    stack = []
+    stack.append(comparisonpoint)
+
+    trigger = True
+
+    difference = sortedCards[0]["position"][0] - comparisonpoint["position"][0]
+    
+    if difference > 5:
+        GameList.append(stack)
+        stack.clear()
+    else:
+        stack.append(sortedCards.pop(0))
+
+
+
+    
+
+
+print(GameList)
+
+            
+
+    
+    
