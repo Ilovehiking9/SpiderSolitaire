@@ -41,20 +41,21 @@ def filterDuplicates(inputList):
 
 
 
-def TemplateMatch(templateImage, mainImage):
+def TemplateMatch(templateImage, mainImage, threshold = .93):
     # Define a threshold to consider a match
     
     
 
     copiedImage = mainImage.copy()
     
-    threshold = 0.85
+    
 
     # Perform template matching
     result = cv2.matchTemplate(copiedImage, templateImage, cv2.TM_CCOEFF_NORMED)
 
     # Find the location(s) where the template match exceeds the threshold
     locations = np.where(result >= threshold)
+
 
     # Draw rectangles around the matched regions on the main image
     
@@ -64,7 +65,7 @@ def TemplateMatch(templateImage, mainImage):
 
         bottom_right = (pt[0] + templateImage.shape[1], pt[1] + templateImage.shape[0])
         cv2.rectangle(copiedImage, pt, bottom_right, (0, 255, 0), 2)
-        #cv2.imwrite('result.png', copiedImage)
+        cv2.imwrite('result.png', copiedImage)
 
 
         Positions.append(pt)
@@ -87,15 +88,27 @@ mainImage = cv2.imread('bufferImg.png')
 
 for filename in os.listdir(CardsFolder):
     templateImage = cv2.imread(f"Cards\\{filename}")
-
-    coordinateList = filterDuplicates(TemplateMatch(templateImage, mainImage))
+    thresholds = {"1.png" : 0.92,
+                  "2.png" : 0.93,
+                  "3.png" : 0.93,
+                  "4.png" : 0.93,
+                  "5.png" : 0.93,
+                  "6.png" : 0.96,
+                  "7.png" : 0.93,
+                  "8.png" : 0.96,
+                  "9.png" : 0.93,
+                  "10.png" : 0.93,
+                  "11.png" : 0.93,
+                  "12.png" : 0.93,
+                  "13.png" : 0.93}
+    coordinateList = filterDuplicates(TemplateMatch(templateImage, mainImage, threshold = thresholds[filename]))
     
     for coordinate in coordinateList:
         primaryCardList.append(dict(cardID = filename.replace(".png", ""), position = coordinate))
         
 sortedCards = sorted(primaryCardList, key=lambda x: x['position'][0])
 
-
+print(sortedCards)
 
 def groupCoordinatesIntoStacks(inputList, rangeLimit = 5):
     outputList = []
