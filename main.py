@@ -96,26 +96,24 @@ for filename in os.listdir(CardsFolder):
 sortedCards = sorted(primaryCardList, key=lambda x: x['position'][0])
 
 
-GameList = []
 
-while len(sortedCards) > 1:
-    comparisonpoint = sortedCards.pop(0)
-    stack = []
-    stack.append(comparisonpoint)
-
-    trigger = True
-
-    difference = sortedCards[0]["position"][0] - comparisonpoint["position"][0]
+def groupCoordinatesIntoStacks(inputList, rangeLimit = 5):
+    outputList = []
+    currentGroup = [inputList[0]]
     
-    if difference > 5:
-        GameList.append(stack)
-        stack.clear()
-    else:
-        stack.append(sortedCards.pop(0))
+    for i in range(1, len(inputList)):
+        if abs(inputList[i]["position"][0] - currentGroup[0]["position"][0]) <= rangeLimit:
+            currentGroup.append(inputList[i])
+        else:
+            outputList.append(currentGroup)
+            currentGroup = [inputList[i]]
+
+    outputList.append(currentGroup)  # Add the last group
+    return outputList
 
 
+GameList = groupCoordinatesIntoStacks(sortedCards)
 
-    
 
 
 print(GameList)
