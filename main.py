@@ -131,7 +131,7 @@ if __name__ == "__main__":
                     "13r.png" : 0.93}
         coordinateList = filterDuplicates(TemplateMatch(templateImage, mainImage, threshold = thresholds[filename]))
         
-        for coordinate in coordinateList:
+        for coordinate in coordinateList: 
             primaryCardList.append(dict(cardID = filename.replace(".png", ""), position = coordinate))
 
     print("Processing...")
@@ -159,6 +159,15 @@ if __name__ == "__main__":
     print(GameList)
 
             
+'''
+shit to do:
 
+1. Find all cards which can move (hell)
+2. Find out where these cards can move (actually hell)
+3. kill myself (also hell, but way easier than steps 1 and 2)
+4. Figure out what the best move is (Our green earth is now red)
+5. Move the card (we're nearing the end, yay!)
+6. repeat. (in a loop ofc, so very easy)
+'''
     
     
