@@ -13,8 +13,6 @@ def calculateDistance(point1, point2):
     x2, y2 = point2
     return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
 
-
-
 #placeholder for an explanation for this shitty code
 
 def filterDuplicates(inputList):
@@ -36,10 +34,6 @@ def filterDuplicates(inputList):
         closeCoordinates.clear()
 
     return FilteredCoordinateList
-
-#sorry for the poor name, but this function literally filters 6's and 9's
-
-
 
 def TemplateMatch(templateImage, mainImage, threshold = .93):
     # Define a threshold to consider a match
@@ -74,42 +68,6 @@ def TemplateMatch(templateImage, mainImage, threshold = .93):
 
     return Positions
 
-
-
-primaryCardList = []
-
-xCoordinateList = []
-
-CardsFolder = r'C:\Users\Nathan\Documents\ProgrammingProjects\Python\SpiderSolitaire\Cards'
-
-PILimg = ImageGrab.grab()
-PILimg.save("bufferImg.png")
-mainImage = cv2.imread('bufferImg.png')
-
-for filename in os.listdir(CardsFolder):
-    templateImage = cv2.imread(f"Cards\\{filename}")
-    thresholds = {"1.png" : 0.92,
-                  "2.png" : 0.93,
-                  "3.png" : 0.93,
-                  "4.png" : 0.93,
-                  "5.png" : 0.93,
-                  "6.png" : 0.96,
-                  "7.png" : 0.93,
-                  "8.png" : 0.96,
-                  "9.png" : 0.93,
-                  "10.png" : 0.93,
-                  "11.png" : 0.93,
-                  "12.png" : 0.93,
-                  "13.png" : 0.93}
-    coordinateList = filterDuplicates(TemplateMatch(templateImage, mainImage, threshold = thresholds[filename]))
-    
-    for coordinate in coordinateList:
-        primaryCardList.append(dict(cardID = filename.replace(".png", ""), position = coordinate))
-        
-sortedCards = sorted(primaryCardList, key=lambda x: x['position'][0])
-
-print(sortedCards)
-
 def groupCoordinatesIntoStacks(inputList, rangeLimit = 5):
     outputList = []
     currentGroup = [inputList[0]]
@@ -124,9 +82,62 @@ def groupCoordinatesIntoStacks(inputList, rangeLimit = 5):
     outputList.append(currentGroup)  # Add the last group
     return outputList
 
+primaryCardList = []
+
+xCoordinateList = []
+
+CardsFolder = r'C:\Users\Nathan\Documents\ProgrammingProjects\Python\SpiderSolitaire\Cards'
+
+PILimg = ImageGrab.grab()
+PILimg.save("bufferImg.png")
+mainImage = cv2.imread('bufferImg.png')
+
+print("Captured...")
+
+for filename in os.listdir(CardsFolder):
+    templateImage = cv2.imread(f"Cards\\{filename}")
+    thresholds = {"1b.png" : 0.92,
+                  "2b.png" : 0.93,
+                  "3b.png" : 0.93,
+                  "4b.png" : 0.93,
+                  "5b.png" : 0.93,
+                  "6b.png" : 0.96,
+                  "7b.png" : 0.93,
+                  "8b.png" : 0.96,
+                  "9b.png" : 0.93,
+                  "10b.png" : 0.93,
+                  "11b.png" : 0.93,
+                  "12b.png" : 0.93,
+                  "13b.png" : 0.93,
+                  "1r.png" : 0.92,
+                  "2r.png" : 0.93,
+                  "3r.png" : 0.93,
+                  "4r.png" : 0.93,
+                  "5r.png" : 0.93,
+                  "6r.png" : 0.96,
+                  "7r.png" : 0.93,
+                  "8r.png" : 0.96,
+                  "9r.png" : 0.94,
+                  "10r.png" : 0.93,
+                  "11r.png" : 0.93,
+                  "12r.png" : 0.93,
+                  "13r.png" : 0.93}
+    coordinateList = filterDuplicates(TemplateMatch(templateImage, mainImage, threshold = thresholds[filename]))
+    
+    for coordinate in coordinateList:
+        primaryCardList.append(dict(cardID = filename.replace(".png", ""), position = coordinate))
+
+print("Processing...")
+
+sortedCards = sorted(primaryCardList, key=lambda x: x['position'][0])
+
+print("Sorting...")
 
 GameList = groupCoordinatesIntoStacks(sortedCards)
 
+for stack in GameList:
+    sortedStack = sorted(stack, key = lambda y: y["position"][1])
+    print(sortedStack)
 
 
 print(GameList)
