@@ -5,6 +5,8 @@ import pytesseract
 import os
 import math
 import time
+import re
+import pydirectinput
 
 #Finds Distance from (x1, y1) to (x2, y2)
 def calculateDistance(point1, point2):
@@ -73,6 +75,7 @@ def groupCoordinatesIntoStacks(inputList, rangeLimit = 5):
         currentGroup = [inputList[0]]
     except IndexError:
         print("try opening your spider solitaire game you goof.")
+        print("https://www.spider-solitaire-game.com/")
         return outputList
     
     for i in range(1, len(inputList)):
@@ -84,6 +87,28 @@ def groupCoordinatesIntoStacks(inputList, rangeLimit = 5):
 
     outputList.append(currentGroup)  # Add the last group
     return outputList
+
+def splitString(input_string):
+    # Define a regular expression pattern to match the number and letter
+    pattern = re.compile(r'(?P<number>\d+)(?P<letter>[a-zA-Z])')
+
+    # Use the pattern to search for matches in the input string
+    match = pattern.match(input_string)
+
+    # Check if a match is found
+    if match:
+        # Extract the matched groups and convert the number to an integer
+        result = {
+            "number": int(match.group('number')),
+            "color": match.group('letter')
+        }
+        return result
+    else:
+        # If no match is found, return None or handle as needed
+        return None
+
+    
+
 
 if __name__ == "__main__":
 
@@ -110,9 +135,9 @@ if __name__ == "__main__":
                     "5b.png" : 0.93,
                     "6b.png" : 0.94,
                     "7b.png" : 0.93,
-                    "8b.png" : 0.96,
+                    "8b.png" : 0.945,
                     "9b.png" : 0.93,
-                    "10b.png" : 0.93,
+                    "10b.png" : 0.92,
                     "11b.png" : 0.93,
                     "12b.png" : 0.93,
                     "13b.png" : 0.93,
@@ -125,10 +150,11 @@ if __name__ == "__main__":
                     "7r.png" : 0.93,
                     "8r.png" : 0.945,
                     "9r.png" : 0.96,
-                    "10r.png" : 0.93,
+                    "10r.png" : 0.92,
                     "11r.png" : 0.93,
-                    "12r.png" : 0.93,
-                    "13r.png" : 0.93}
+                    "12r.png" : 0.92,
+                    "13r.png" : 0.93,
+                    "empty.png": 0.93}
         coordinateList = filterDuplicates(TemplateMatch(templateImage, mainImage, threshold = thresholds[filename]))
         
         for coordinate in coordinateList: 
@@ -154,10 +180,60 @@ if __name__ == "__main__":
     
     GameList = tempList
 
+    for stack in GameList:
+        for card in stack:
+            splitCardName = splitString(card["cardID"])
+            if card["cardID"] != "empty":
+                del(card["cardID"])
+                try:
+                    card["number"] = splitCardName["number"]
+                    card["color"] = splitCardName["color"]
+                except TypeError:
+                    continue
+            else:
+                del(card["cardID"])
+                card["number"] = "empty"
+                card["color"] = "empty"
 
+sumOfCards = 0
+numberOfCards = 0
 
-    print(GameList)
+for stack in GameList:
+    for card in stack:
+        if card["number"] != "empty":
+            sumOfCards += card["number"]
+            numberOfCards += 1
 
+#high off my mind rn
+print(sumOfCards)
+print(numberOfCards)
+print(sumOfCards/numberOfCards)
+
+class gameProcessing:
+    def __init__(self, game = []):
+        self.game = game
+
+    def allMovableCards(self):
+        moveableCards = []
+        for stack in self.game:
+            moveableCardsInStack = []
+
+            lenStack = len(stack)
+            for card in stack:
+                
+                if card["number"] == "empty":
+                    lenStack -= 1
+
+            lowerBound = len(stack) + 1 - lenStack
+            print(f"lenstack = {len(stack)}")
+            print(f"len Stack = {lenStack}")
+
+            #moveableCards.append(moveableCardsInStack)
+            
+                
+gameProcessing(GameList).allMovableCards()
+
+print(GameList)
             
 '''
 shit to do:
