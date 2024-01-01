@@ -7,7 +7,7 @@ import math
 import time
 import re
 import pydirectinput
-
+from pprint import pprint
 #Finds Distance from (x1, y1) to (x2, y2)
 def calculateDistance(point1, point2):
     x1, y1 = point1
@@ -127,6 +127,7 @@ if __name__ == "__main__":
     print("Captured...")
 
     for filename in os.listdir(CardsFolder):
+        print(f"Processing {filename}")
         templateImage = cv2.imread(f"Cards\\{filename}")
         thresholds = {"1b.png" : 0.92,
                     "2b.png" : 0.93,
@@ -195,52 +196,78 @@ if __name__ == "__main__":
                 card["number"] = "empty"
                 card["color"] = "empty"
 
-sumOfCards = 0
-numberOfCards = 0
+#adds stack label to cards
 
-for stack in GameList:
+for index, stack in enumerate(GameList):
     for card in stack:
-        if card["number"] != "empty":
-            sumOfCards += card["number"]
-            numberOfCards += 1
+        card["stack"] = index
 
-#high off my mind rn
-print(sumOfCards)
-print(numberOfCards)
-print(sumOfCards/numberOfCards)
+
 
 class gameProcessing:
     def __init__(self, game = []):
         self.game = game
-
-    def allMovableCards(self):
-        moveableCards = []
+        
+    def getAllMoveableCards(self):
+        #I dont remember how i did this
+        allMoveableCards = []
+        nextCard = None 
         for stack in self.game:
-            moveableCardsInStack = []
+            for index, card in enumerate(stack):
 
-            lenStack = len(stack)
-            for card in stack:
-                
-                if card["number"] == "empty":
-                    lenStack -= 1
+                try:
+                    nextCard = stack[index+1]
+                except IndexError:
+                    allMoveableCards.append(card)
+                    continue
+                if card["color"] == nextCard["color"]:
+                    try:
+                        if card["number"] == nextCard["number"] + 1:
+                            allMoveableCards.append(card)
+                    except TypeError:
+                        continue
 
-            lowerBound = len(stack) + 1 - lenStack
-            print(f"lenstack = {len(stack)}")
-            print(f"len Stack = {lenStack}")
+        return(allMoveableCards)
+    
+    def getAllCardMovements(self):
 
-            #moveableCards.append(moveableCardsInStack)
+        moveableCards = gameProcessing(self.game).getAllMoveableCards()
+
+        #make a list of last cards in each stack
+        lastCards = []
+        
+        
+        for stack in self.game:
+            
+            lastCards.append(stack[len(stack)-1])
+
+        allCardMovements = []
+
+        for card in moveableCards:
+            for destination in lastCards:
+                if card["number"] == destination["number"] - 1:
+                    allCardMovements.append([card, destination])
+
+        return(allCardMovements)
+                    
+    #def simulateGame(self, movement)
+
+
+if __name__ == "__main__":
+
+    allCardMovements = gameProcessing(GameList).getAllCardMovements()
+
+    pprint(allCardMovements)
+        
+
+
+
             
                 
-gameProcessing(GameList).allMovableCards()
-
-print(GameList)
             
 '''
 shit to do:
 
-1. Find all cards which can move (hell)
-2. Find out where these cards can move (actually hell)
-3. kill myself (also hell, but way easier than steps 1 and 2)
 4. Figure out what the best move is (Our green earth is now red)
 5. Move the card (we're nearing the end, yay!)
 6. repeat. (in a loop ofc, so very easy)
