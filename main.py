@@ -276,7 +276,7 @@ if __name__ == "__main__":
 
 '''
 shit to do:
-3. simulate the game
+3. simulate all games
 4. Figure out what the best move is (Our green earth is now red)
 5. Move the card (we're nearing the end, yay!)
 6. repeat. (in a loop ofc, so very easy)
